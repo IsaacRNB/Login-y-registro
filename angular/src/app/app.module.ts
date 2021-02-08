@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
 
@@ -11,6 +11,9 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { HomeComponent } from './components/main/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthGuard } from './components/auth/guards/auth.guard';
+import { PostsComponent } from './components/posts/posts.component';
+import { MakePostComponent } from './components/make-post/make-post.component';
+import { NgbModule, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,17 @@ import { AuthGuard } from './components/auth/guards/auth.guard';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    PostsComponent,
+    MakePostComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    NgbModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

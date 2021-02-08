@@ -1,21 +1,19 @@
 'use strict'
-
-const { formatters} =  use('Validator')
+const { formatters } = use('Validator')
 
 class StoreUser {
-  get rules() {
+  get rules () {
     return {
-      // validation rules
-      email: 'required|email|max:180|unique:users,email',
+      email: 'required|email|max:150|unique:users:email',
       password: 'required|max:100'
     }
   }
 
-  get validateAll() {
-    return true;
+  get validateAll(){
+    return true
   }
 
-  get formatter() {
+  get formatters(){
     return formatters.JsonApi
   }
 }

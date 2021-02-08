@@ -2,33 +2,14 @@
 const User = use('App/Models/User')
 class UserController {
 
-    async login({auth,request}){
+    async store({request, response}){
+        const data = request.only(['username', 'email', 'password'])
+        const user = await User.create(data)
+        return response.created({
+            status: true,
+            data: user
+        })
 
-        
-        const {  email, password } = await request.only(['email','password'])
-
-        let token = await auth.withRefreshToken().attempt(email,password)
-       
-        return token;
-
-    }
-
-    async store({request}){
-
-        const { email, password} = await request.all();
-
-        const user = await User.create({
-            email,
-            password
-        });
-
-        return user
-
-    }
-
-    async index({}){
-        let users = User.all()
-        return users;
     }
 }
 

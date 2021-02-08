@@ -2,11 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { TokenPaylaod, User } from '../models/user';
+import { TokenPaylaod, User, User2 } from '../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators'
 import { Token } from '../models/token';
 import { Router } from '@angular/router';
+import { Post } from '../models/post';
+import { Comentario, Comentario2 } from '../models/comment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +25,22 @@ export class AuthService {
     return this.http.post(`${this.apiURL}users`, user);
   }
 
-  login(user: User): Observable<any> {
+  makeComment(comment: Comentario):Observable<any>{
+    return this.http.post(`${this.apiURL}comment`, comment)
+  }
+  getComments(post_id):Observable<any>{
+
+    return this.http.get(`${this.apiURL}comment/get/${post_id}`)
+  }
+
+  show(): Observable<any>{
+    return this.http.get(`${this.apiURL}posts`);
+  }
+  post(post:Post):Observable<any>{
+    return this.http.post(`${this.apiURL}posts`, post);
+  }
+
+  login(user: User2): Observable<any> {
 
     let url = `${this.apiURL}login`;
 

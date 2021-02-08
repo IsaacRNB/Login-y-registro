@@ -1,32 +1,17 @@
 'use strict'
 
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| Http routes are entry points to your web application. You can create
-| routes for different URLs and bind Controller actions to them.
-|
-| A complete guide on routing is available here.
-| http://adonisjs.com/docs/4.1/routing
-|
-*/
+const PostController = require("../app/Controllers/Http/PostController")
 
-/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
-
-Route.post('login', 'UserController.login')
-// Route.post('register', 'UserController.register')
-
-Route.get('mostrar', 'UserController.index')
-
-Route.resource('users', 'UserController')
-  .apiOnly()
-  .validator(new Map([
-     [['users.store'], ['StoreUser']]
+Route.post('/login', 'AuthController.login')
+Route.resource('users', 'UserController').apiOnly().validator(new Map([
+    [['users.store'], ['StoreUser']]
   ]))
+  Route.resource('posts', 'PostController').apiOnly()
+
+  //Route.post('/post', 'PostController.store' )
+  Route.post('/comment', 'CommentController.store' )
+
+  Route.get('/comment/get/:id', 'CommentController.getComments')
+  

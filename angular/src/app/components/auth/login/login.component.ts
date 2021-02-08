@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { error } from 'protractor';
 import { errorMessage, successDialog, timeMessage } from 'src/app/functions/alerts';
-import { User } from 'src/app/models/user';
+import { User, User2 } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  user: User;
+  user: User2;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router:Router) {
     this.createForm();
@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
 
   setUser():void{
     this.user = {
+      
       email: this.loginForm.get('email').value,
       password: this.loginForm.get('password').value
     }
