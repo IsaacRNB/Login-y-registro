@@ -4,13 +4,13 @@ class UserController {
 
     async store({request, response}){
         const data = request.only(['username', 'email', 'password'])
-        const user = await User.create(data)
         return response.created({
-            status: true,
-            data: user
+            status: "OK"
         })
 
     }
+    
+    
 }
 
 module.exports = UserController

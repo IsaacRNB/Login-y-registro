@@ -10,7 +10,7 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li *ngIf="auth.isAuthenticated()" class="nav-item">
-            <a class="nav-item nav-link" (click)="auth.logout()">Logout</a>
+            <a class="nav-item nav-link" style="cursor: pointer;" (click)="auth.logout()">Logout</a>
           </li>
         </ul>
       </div>

@@ -7,6 +7,13 @@ class AuthController {
 
         return response.ok(token)
     }
+    async getUser({response, auth}){
+        const user = await auth.getUser()
+
+        return response.ok({
+            data: user['username']
+        })
+    }
 }
 
 module.exports = AuthController

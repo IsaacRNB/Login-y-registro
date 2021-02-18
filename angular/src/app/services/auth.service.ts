@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators'
 import { Token } from '../models/token';
 import { Router } from '@angular/router';
 import { Post } from '../models/post';
-import { Comentario, Comentario2 } from '../models/comment';
+import { Comentario, Comentario2, Comentario3 } from '../models/comment';
 
 @Injectable({
   providedIn: 'root',
@@ -28,16 +28,40 @@ export class AuthService {
   makeComment(comment: Comentario):Observable<any>{
     return this.http.post(`${this.apiURL}comment`, comment)
   }
+  deletePost(id):Observable<any>{
+    return this.http.delete(`${this.apiURL}post/delete/${id}`)
+  }
+  deleteComment(id):Observable<any>{
+    return this.http.delete(`${this.apiURL}comm/delete/${id}`)
+  }
   getComments(post_id):Observable<any>{
 
     return this.http.get(`${this.apiURL}comment/get/${post_id}`)
   }
+  
+  getCommentss():Observable<any>{
+
+    return this.http.get(`${this.apiURL}comment/get`)
+  }
+
 
   show(): Observable<any>{
     return this.http.get(`${this.apiURL}posts`);
   }
   post(post:Post):Observable<any>{
     return this.http.post(`${this.apiURL}posts`, post);
+  }
+  
+  postupdate(post:Post):Observable<any>{
+    return this.http.post(`${this.apiURL}post/update`, post)
+  }
+
+  commentupdate(post:Comentario3):Observable<any>{
+    return this.http.post(`${this.apiURL}comment/update`, post)
+  }
+
+  getUser(data): Observable<any>{
+    return this.http.post(`${this.apiURL}user/get`, data);
   }
 
   login(user: User2): Observable<any> {

@@ -9,7 +9,7 @@ class CommentSchema extends Schema {
       table.increments()
       table.string('body', 150).notNullable()
       table.string('user', 80).references('username').inTable('users')
-      table.integer('post_id', 20).unsigned().references('id').inTable('posts')
+      table.integer('post_id', 20).unsigned().references('id').inTable('posts').onDelete('CASCADE')
       table.timestamps()
     })
   }
