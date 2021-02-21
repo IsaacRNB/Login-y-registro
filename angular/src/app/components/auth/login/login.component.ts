@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
 
   setUser():void{
     this.user = {
-      
       email: this.loginForm.get('email').value,
       password: this.loginForm.get('password').value
     }

@@ -17,6 +17,8 @@ export class MakePostComponent implements OnInit {
   @ViewChild("myModalInfo", {static: false}) myModalInfo: TemplateRef<any>;
   @ViewChild("myModalInfo2", {static: false}) myModalInfo2: TemplateRef<any>;
   @ViewChild("myModalInfo3", {static: false}) myModalInfo3: TemplateRef<any>;
+  @ViewChild("myModalInfo4", {static: false}) myModalInfo4: TemplateRef<any>;
+
   post = new Post();
   posts: Post[] = [];
   posts2: Post2[] = [];
@@ -44,13 +46,21 @@ export class MakePostComponent implements OnInit {
     const data = {
       "token": token
     }
-    console.log(data)
-    this.postService.show().subscribe(data => {this.posts2 = data["data"]; console.log(this.posts2)})
-    this.postService.getUser(data).subscribe(data => {this.user = data["data"]; console.log(this.user)});
+    this.postService.show().subscribe(data => {this.posts2 = data["data"]; }) //console.log(this.posts2)
+    this.postService.getUser(data).subscribe(data => {this.user = data["data"];}); //console.log(this.user)
 
   }
   mostrarModalInfo(i:number){
     this.modalService.open(this.myModalInfo);
+    console.log(`info post: ${this.posts2[i].id}`);
+    const id = this.posts2[i].id
+    
+    this.postService.getComments(id).subscribe(data => {this.comments = data["data"]})
+    console.log(id)
+  }
+
+  mostrarModalInfo4(i:number){
+    this.modalService.open(this.myModalInfo4);
     console.log(`info post: ${this.posts2[i].id}`);
     const id = this.posts2[i].id
     
@@ -154,7 +164,8 @@ export class MakePostComponent implements OnInit {
 
   }
 
-  actualizarcomment(ngform: NgForm){
+  actualizarcomment(ngform: NgForm)
+  {
     if (this.comments[this.idupdate2].user == this.user){
     const id = this.comments[this.idupdate2].id
     const token = localStorage.getItem('token');
@@ -170,13 +181,11 @@ export class MakePostComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500
       })
-      ngform.resetForm();
     }, error => {
     Swal.fire({
     icon: 'error',
     title: 'Oops...',
     text: 'Something went wrong!',
-    footer: '<a href>Why do I have this issue?</a>'
       })
     })
   }
@@ -186,9 +195,10 @@ export class MakePostComponent implements OnInit {
       title: 'Oops...',
       text: 'No puedes actualizar un comentario que no es tuyo!'
         })
-        ngform.resetForm();
   }
-  }
+  ngform.resetForm();
+
+}
 
   borrarComentario(i:number){
     if (this.comments[i].user == this.user){
@@ -220,7 +230,9 @@ export class MakePostComponent implements OnInit {
 
   crear (ngform: NgForm)
   {
+
     const token = localStorage.getItem('token');
+    
     const data: Post2 = 
     {
       "id": 0,
@@ -229,8 +241,17 @@ export class MakePostComponent implements OnInit {
       "title": ngform.control.value.title,
       "body": ngform.control.value.body
     }
+    if(data == null)
+    {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Necesitas ingresar contenido!',
+          })
+    } 
     //this.posts2.push(data)
-  
+
+
     this.postService.post(data).subscribe((data:any) =>{
       Swal.fire({
         icon: 'success',
@@ -245,14 +266,10 @@ export class MakePostComponent implements OnInit {
     icon: 'error',
     title: 'Oops...',
     text: 'No eres un usuario autenticado!',
-    footer: '<a href>Why do I have this issue?</a>'
       })
     })
-
-    
-    
-
   }
+
   crearComentario (ngform: NgForm, i:number)
   {
     const token = localStorage.getItem('token');
@@ -272,17 +289,16 @@ export class MakePostComponent implements OnInit {
         showConfirmButton: false,
         timer: 1500
       })
-      ngform.resetForm();
     }, error => {
     Swal.fire({
     icon: 'error',
     title: 'Oops...',
     text: 'No eres un usuario autenticado!',
-    footer: '<a href>Why do I have this issue?</a>'
       })
     })
 
-    
+    ngform.resetForm();
+
     
 
   }

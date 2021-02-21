@@ -21,53 +21,61 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router:Router) {}
 
-  register(user: User): Observable<any> {
+  register(user: User): Observable<any> 
+  {
     return this.http.post(`${this.apiURL}users`, user);
   }
 
-  makeComment(comment: Comentario):Observable<any>{
-    return this.http.post(`${this.apiURL}comment`, comment)
+  makeComment(comment: Comentario):Observable<any>
+  {
+    return this.http.post(`${this.apiURL}api/comment`, comment)
   }
-  deletePost(id):Observable<any>{
-    return this.http.delete(`${this.apiURL}post/delete/${id}`)
+  deletePost(id):Observable<any>
+  {
+    return this.http.delete(`${this.apiURL}api/post/delete/${id}`)
   }
-  deleteComment(id):Observable<any>{
-    return this.http.delete(`${this.apiURL}comm/delete/${id}`)
+  deleteComment(id):Observable<any>
+  {
+    return this.http.delete(`${this.apiURL}api/comm/delete/${id}`)
   }
-  getComments(post_id):Observable<any>{
-
-    return this.http.get(`${this.apiURL}comment/get/${post_id}`)
-  }
-  
-  getCommentss():Observable<any>{
-
-    return this.http.get(`${this.apiURL}comment/get`)
-  }
-
-
-  show(): Observable<any>{
-    return this.http.get(`${this.apiURL}posts`);
-  }
-  post(post:Post):Observable<any>{
-    return this.http.post(`${this.apiURL}posts`, post);
+  getComments(post_id):Observable<any>
+  {
+    return this.http.get(`${this.apiURL}api/comment/get/${post_id}`)
   }
   
-  postupdate(post:Post):Observable<any>{
-    return this.http.post(`${this.apiURL}post/update`, post)
+  getCommentss():Observable<any>
+  {
+    return this.http.get(`${this.apiURL}api/comment/get`)
   }
 
-  commentupdate(post:Comentario3):Observable<any>{
-    return this.http.post(`${this.apiURL}comment/update`, post)
+
+  show(): Observable<any>
+  {
+    return this.http.get(`${this.apiURL}api/posts`);
+  }
+  post(post:Post):Observable<any>
+  {
+    return this.http.post(`${this.apiURL}api/posts`, post);
+  }
+  
+  postupdate(post:Post):Observable<any>
+  {
+    return this.http.post(`${this.apiURL}api/post/update`, post)
   }
 
-  getUser(data): Observable<any>{
-    return this.http.post(`${this.apiURL}user/get`, data);
+  commentupdate(post:Comentario3):Observable<any>
+  {
+    return this.http.post(`${this.apiURL}api/comment/update`, post)
   }
 
-  login(user: User2): Observable<any> {
+  getUser(data): Observable<any>
+  {
+    return this.http.post(`${this.apiURL}api/user/get`, data);
+  }
 
+  login(user: User2): Observable<any> 
+  {
     let url = `${this.apiURL}login`;
-
     const base = this.http.post(url, user)
 
     const request = base.pipe(
