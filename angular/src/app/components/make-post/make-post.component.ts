@@ -1,11 +1,12 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { title } from 'process';
 import { Post, Post2, Post3 } from 'src/app/models/post';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { Comentario, Comentario2, Comentario3 } from 'src/app/models/comment';
+import { timeMessage, successDialog, errorMessage } from 'src/app/functions/alerts';
 
 @Component({
   selector: 'app-make-post',
@@ -33,14 +34,19 @@ export class MakePostComponent implements OnInit {
   user:string;
   idupdate = 0
   idupdate2 = 0
-  
 
-  constructor(private postService:AuthService, private modalService: NgbModal) { }
+  postForm: FormGroup;
+  posT: Post2;
 
+
+  constructor(private fb: FormBuilder, private postService:AuthService, private modalService: NgbModal) {
+    this.createFormPost();
+   }
 
   
   ngOnInit(): void 
   {
+
     const token = localStorage.getItem('token');
   
     const data = {
@@ -68,8 +74,6 @@ export class MakePostComponent implements OnInit {
     console.log(id)
   }
 
-
-
   mostrarinfo(i:number){
     this.modalService.open(this.myModalInfo2);
     console.log(`info post: ${this.posts2[i].id}`);
@@ -79,6 +83,7 @@ export class MakePostComponent implements OnInit {
     console.log(id)
 
   }
+
   borrarPost(i:number){
     if (this.posts2[i].user == this.user){
       const id = this.posts2[i].id
@@ -106,6 +111,7 @@ export class MakePostComponent implements OnInit {
           })
     }
   }
+
   mostrarpost(i:number){
     this.modalService.open(this.myModalInfo2);
     console.log(`info post: ${this.posts2[i].id}`);
@@ -198,7 +204,7 @@ export class MakePostComponent implements OnInit {
   }
   ngform.resetForm();
 
-}
+  }
 
   borrarComentario(i:number){
     if (this.comments[i].user == this.user){
@@ -228,47 +234,68 @@ export class MakePostComponent implements OnInit {
     }
   }
 
-  crear (ngform: NgForm)
-  {
 
-    const token = localStorage.getItem('token');
-    
-    const data: Post2 = 
-    {
-      "id": 0,
-      "user": "",
-      "token": token,
-      "title": ngform.control.value.title,
-      "body": ngform.control.value.body
+  // ===========================================================================
+
+
+  setPost():void{
+    this.posT = {
+      id: this.postForm.get('id').value,
+      user: this.postForm.get('user').value,
+      token: this.postForm.get('token').value,
+      title: this.postForm.get('title').value,
+      body: this.postForm.get('body').value,
     }
-    if(data == null)
-    {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Necesitas ingresar contenido!',
-          })
-    } 
-    //this.posts2.push(data)
-
-
-    this.postService.post(data).subscribe((data:any) =>{
-      Swal.fire({
-        icon: 'success',
-        title: 'Agregado con exito',
-        showConfirmButton: false,
-        timer: 1500
-      })
-      ngform.resetForm();
-      this.postService.show().subscribe(data => {this.posts2 = data["data"]; console.log(this.posts2)})
-    }, error => {
-    Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'No eres un usuario autenticado!',
-      })
-    })
   }
+
+  post2(): void {
+    if (this.postForm.invalid) {
+      return Object.values(this.postForm.controls).forEach(control => {
+        control.markAsTouched();
+      });
+    }else{
+      this.setPost();
+      this.postService.post(this.posT).subscribe((data:any) => {
+        timeMessage('Publicando..', 1500).then(() => {
+          successDialog('Publicado')
+        });
+        this.postService.show().subscribe(data => {this.posts2 = data["data"]; console.log(this.posts2)})
+        
+      });
+    }
+  }
+
+  createFormPost(): void {
+    const token = localStorage.getItem('token');
+
+    this.postForm = this.fb.group({
+      id: 0,
+      user:"",
+      token: token,
+      title: ['', [Validators.required]],
+      body: ['', [Validators.required]],
+    });
+  }
+
+
+  // ===========================================================================
+
+
+  get titleValidate() {
+    return (
+      this.postForm.get('title').invalid && this.postForm.get('title').touched
+    );
+  }
+
+  get bodyValidate() {
+    return (
+      this.postForm.get('body').invalid && this.postForm.get('body').touched
+    );
+  }
+
+  
+  // ===========================================================================
+
 
   crearComentario (ngform: NgForm, i:number)
   {
@@ -281,7 +308,8 @@ export class MakePostComponent implements OnInit {
       "body": ngform.control.value.bodyC,
       "post_id": this.posts2[i].id
     }
-    
+    if(data.body!=null) {
+
     this.postService.makeComment(data).subscribe((data:any) =>{
       Swal.fire({
         icon: 'success',
@@ -296,14 +324,16 @@ export class MakePostComponent implements OnInit {
     text: 'No eres un usuario autenticado!',
       })
     })
-
-    ngform.resetForm();
-
-    
-
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Campo requerido!',
+    })
   }
 
-
+    ngform.resetForm();
+  }
 
   ocultar() 
   {
@@ -317,8 +347,6 @@ export class MakePostComponent implements OnInit {
     }
   }
 
-
-
   ocultarinfo() 
   {
     if(this.bandera2 == false)
@@ -330,4 +358,5 @@ export class MakePostComponent implements OnInit {
       this.bandera2 = false
     }
   }
+  
 }
