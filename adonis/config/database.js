@@ -45,7 +45,7 @@ module.exports = {
   |
   | Here we define connection settings for MySQL database.
   |
-  | npm i --save mysql
+  | cc
   |
   */
   mysql: {
@@ -80,5 +80,25 @@ module.exports = {
       database: Env.get('DB_DATABASE', 'adonis')
     },
     debug: Env.get('DB_DEBUG', false)
-  }
+  },
+
+  mongodb: {
+    connectionString: Env.get('MONGO_CONNECTION_STRING', ''),
+    connection: {
+      host: Env.get('MONGO_HOST', 'localhost'),
+      port: Env.get('MONGO_PORT', 27017),
+      user: Env.get('MONGO_USER', ''),
+      pass: Env.get('MONGO_PASSWORD', ''),
+      database: Env.get('MONGO_DATABASE', 'adonis'),
+      options: {
+        useUnifiedTopology: true,
+        useNewUrlParser: true 
+        // All options can be found at http://mongoosejs.com/docs/connections.html
+      },
+      debug: false
+    }
+  },
+
+
+
 }

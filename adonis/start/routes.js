@@ -6,6 +6,7 @@ const PostController = require("../app/Controllers/Http/PostController")
 const Route = use('Route')
  
 Route.post('/login', 'AuthController.login')
+
 Route.resource('users', 'UserController').apiOnly().validator(new Map([
     [['users.store'], ['StoreUser']]
   ]))
@@ -13,7 +14,7 @@ Route.resource('users', 'UserController').apiOnly().validator(new Map([
   Route.group(() => {
     Route.post('/comment', 'CommentController.store' )
     Route.get('/comment/get/:id', 'CommentController.getComments')
-    Route.post('/user/get', 'AuthController.getUser')
+    Route.get('/user/get', 'AuthController.getUser')
     Route.post('/post/update', 'PostController.update')
     Route.post('/comment/update', 'CommentController.update')
     Route.delete('/post/delete/:id', 'PostController.delete')
@@ -21,5 +22,7 @@ Route.resource('users', 'UserController').apiOnly().validator(new Map([
     Route.resource('posts', 'PostController').apiOnly()
   }).middleware('auth').prefix('api/')
  
+
+  Route.post('/sensor', 'SensorController.store')
  
   //Route.post('/post', 'PostController.store' )

@@ -66,7 +66,7 @@
               </div>
               <hr style="padding: 0.5px; background-color: gray;">
 
-            <b> <p class="text-dark bg-light card-text mb-3 mt-5" style="text-transform: uppercase;" [innerHTML]="post.title"></p></b>
+            <b> <p class="text-dark bg-light card-text mb-3 mt-5" [innerHTML]="post.title"></p></b>
               <p class="card-text mb-5" id="body" [innerHTML]="post.body"></p>
 
 
@@ -74,7 +74,7 @@
               <hr style="padding: 0.5px; background-color: gray;">
 
                 <div class="form-group" >
-                  <button type="button"  class="btn btn-info mt-4" (click)="mostrarModalInfo4(i)" *ngIf="post.id>0">Comentar</button>
+                  <button type="button"  class="btn btn-info" (click)="mostrarModalInfo4(i)" *ngIf="post.id>0">Comentar</button>
               </div>
             </div>
             </div>
@@ -95,17 +95,18 @@
     <div class="modal-body">
       
 
-               <div class="card text-white bg-dark mb-3" *ngFor="let comm of comments; let j = index">
+               <div class="card text-white bg-dark mb-3"  *ngFor="let comm of comments; let j = index">
                     <div class="card-body" >
 
                       <div class="row">
                         <div class="col">
                           <h4 class="card-title" id="user" [innerHTML]="comm.user"></h4>
-                          
+                          <hr style="padding: 0.5px; background-color: gray;">
+                          <p [innerHTML]="comm.body"></p>
                         </div>
                         <div class="col">
                           <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" *ngIf="comm.user==this.user" style="font-size: 20px; margin-top: -5px; margin-left: 220px;" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" *ngIf="comm.user==this.user" style="font-size: 20px; margin-top: -5px; margin-left: 120px;" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
                               <a class="dropdown-item" (click)="mostrarcomentario(j)" style="cursor: pointer;">Editar</a>
@@ -115,8 +116,6 @@
                           </div>
                         </div>
                       </div>
-                      <hr style="padding: 0.5px; background-color: gray;">
-                      <p [innerHTML]="comm.body"></p>
                         
                     </div>
                   </div>
